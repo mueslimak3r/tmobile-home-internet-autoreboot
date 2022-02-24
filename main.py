@@ -21,7 +21,8 @@ def monitor():
     while True:
         if not check_connection():
             reboot_router()
-        sleep(CHECK_COOLDOWN)
+        else:
+            sleep(CHECK_COOLDOWN)
 
 if __name__ == "__main__":
     monitor()

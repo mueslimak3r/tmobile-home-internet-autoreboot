@@ -48,6 +48,8 @@ def reboot_router():
         print('rebooted router')
         sleep(5)
         driver.close()
+        print('sleeping to 10 minutes')
+        sleep(600)
         
     except Exception as e:
         print(e)
