@@ -1,4 +1,4 @@
-# tmobile-home-internet-autoreboot
+# tmobile home internet auto-reboot
 automatically reboot tmobile home internet router when internet connection is lost
 
 ## Usage
