@@ -9,18 +9,24 @@ ROUTER_IP = os.environ['TMOBILE_GATEWAY']
 USER = os.environ['TMOBILE_USER']
 PASSWORD = os.environ['TMOBILE_PASSWORD']
 
-def reboot_router():
+def reboot_router_task():
     print('trying to reboot router')
 
-    # Using Chrome to access the gateway
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('--headless')
-    driver = webdriver.Chrome(options=chrome_options)
+    try:
+        # Using Chrome to access the gateway
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('--headless')
+        driver = webdriver.Chrome(options=chrome_options)
+    except Exception as e:
+        print('unable to connect to start chrome driver - check installation')
+        return False
+
     try:
         driver.get('http://' + ROUTER_IP)
     except Exception as e:
         print('unable to connect to router')
-        return
+        return False
+
     try:
         # click on the system button to open the login popup
         driver.find_element(by=By.LINK_TEXT, value='System').click()
@@ -48,11 +54,18 @@ def reboot_router():
         print('rebooted router')
         sleep(5)
         driver.close()
-        print('sleeping to 10 minutes')
-        sleep(600)
-        
+        return True
     except Exception as e:
         print(e)
+    return False
+
+def reboot_router():
+    if reboot_router_task():
+        print('sleeping for 10 minutes after reboot')
+        sleep(600)
+    else:
+        print('sleeping for 5 minutes after reboot error')
+        sleep(300)
 
 if __name__ == "__main__":
     reboot_router()
